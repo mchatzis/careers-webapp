@@ -1,4 +1,4 @@
-const { GraphQLScalarType, Kind } = require('graphql');
+const { GraphQLScalarType } = require('graphql');
 
 
 const dateScalar = new GraphQLScalarType({

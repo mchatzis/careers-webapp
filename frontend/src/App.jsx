@@ -4,10 +4,18 @@ import { gql, useQuery } from '@apollo/client';
 
 const GET_COMPANIES = gql`
     query GetCompanies {
-    companies {
-        name
-        industry
-    }
+        companies {
+            id
+            name
+            pagination_url
+            url
+            jobs {
+                id
+                title
+                location
+                date_added
+            }
+        }
     }
 `;
 

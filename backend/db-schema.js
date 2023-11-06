@@ -9,7 +9,11 @@ const companySchema = new Schema({
         type: String,
         required: [true, 'Company.url required.']
     },
-    pagination_url: String,
+    htmlElem: {
+        type: String,
+        required: [true, 'Company.jobsElem required.']
+    },
+    paginationUrl: String,
     jobs: [{
             type: Schema.Types.ObjectId,
             ref: 'Job'
@@ -25,9 +29,9 @@ const jobSchema = new Schema({
         type: String,
         required: [true, 'Job.location required.']
     },
-    date_added: {
+    dateAdded: {
         type: Date,
-        required: [true, 'Job.date_added required.']
+        required: [true, 'Job.dateAdded required.']
     },
     company: {
         type: Schema.Types.ObjectId,

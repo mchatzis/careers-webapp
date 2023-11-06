@@ -18,11 +18,11 @@ const resolvers = {
     Date: dateScalar,
 
     Mutation: {
-        addCompany: (_,{name, url, pagination_url}) => Company.create({name, url, pagination_url}),
+        addCompany: (_,{name, url, htmlElem, paginationUrl}) => Company.create({name, url, htmlElem, paginationUrl}),
         addJob: async (_, {title, location, companyName}) => {
-                    const date_added = Date.now();
+                    const dateAdded = Date.now();
                     const company = await Company.findOne({name:companyName}).exec();
-                    const job = await Job.create({title, location, date_added, company});
+                    const job = await Job.create({title, location, dateAdded, company});
                     return job
         }
     }
