@@ -20,7 +20,7 @@ const typeDefs = `#graphql
 
     type Query {
         companies: [Company]
-        jobs: [Job]
+        jobs(title: String, location: String): [Job]
     }
 
     type Mutation {
