@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const fs = require('fs')
+const fs = require('fs');
 
 class RecursionDepthError extends Error{
   constructor(message){
@@ -8,7 +8,7 @@ class RecursionDepthError extends Error{
   }
 }
 
-async function browseRevolut(){
+const browseRevolut = async () => {
 
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
@@ -44,14 +44,16 @@ async function browseRevolut(){
         }
       }
     };
-    await expandPagination();
+    // await expandPagination();
 
     const jobsSelector = '#__next > main > section.Box-rui__sc-1g1k12l-0.sc-d85bbb3d-0.jHUjFU.cNPxDM > div > div.Box-rui__sc-1g1k12l-0.sc-2f63823-1.kVISKd.hfZcoP';
-    var element2 = await page.waitForSelector(jobsSelector);
-    var html2 = await element2.evaluate(el => el.innerText);
-    // fs.writeFile('innerHTML2.html', html2, ()=>{});
+    var jobsElem = await page.waitForSelector(jobsSelector);
+    var jobsText = await jobsElem.evaluate(el => el.innerText);
 
     await browser.close();
-}
 
-browseRevolut();
+    return jobsText;
+  }
+
+
+module.exports = browseRevolut;
