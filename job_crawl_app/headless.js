@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const fs = require('fs');
 
 class RecursionDepthError extends Error{
   constructor(message){
@@ -8,9 +7,18 @@ class RecursionDepthError extends Error{
   }
 }
 
-const browseRevolut = async () => {
+const crawl = async (company) => {
 
-    const browser = await puppeteer.launch({headless: true});
+  return await extractJobs(company);
+}
+
+const extractJobs = async ({ companyUrl, cookieSelector, jobsSelector, paginationSelector }) => {
+
+    const browser = await puppeteer.launch({
+      headless: false,
+      args:[
+        '--start-maximized'
+     ]});
     const page = await browser.newPage();
 
     await page.setRequestInterception(true);
@@ -22,13 +30,20 @@ const browseRevolut = async () => {
       }
     });
 
-    await page.goto('https://www.revolut.com/careers/', { waitUntil: ['load', 'domcontentloaded', 'networkidle0'], timeout: 10000});
+    await page.goto(companyUrl , { waitUntil: ['load', 'domcontentloaded'], timeout: 6000});
+    await new Promise(r => setTimeout(r, 1000));
 
     // Accept cookies
-    const cookieSelector = 'body > div:nth-child(5) > div > div > div.Box-rui__sc-1g1k12l-0.Flex-rui__sc-p3ay74-0.eOOyhv.joCZEa > button:nth-child(1)';
-    await Promise.all([ page.click(cookieSelector), page.waitForNavigation()]);
+    try{
+      await Promise.all([ page.waitForNavigation({timeout: 4000}), page.click(cookieSelector) ]);
+    }
+    catch (error) {
+      let isTimeOutError = error instanceof puppeteer.TimeoutError;
+      if (!isTimeOutError){
+        throw error;
+      }
+    }
 
-    const paginationSelector = '#__next > main > section.Box-rui__sc-1g1k12l-0.sc-d85bbb3d-0.jHUjFU.cNPxDM > div > div.Box-rui__sc-1g1k12l-0.sc-2f63823-1.kVISKd.hfZcoP > div.Box-rui__sc-1g1k12l-0.eyNBrd > a';
     async function expandPagination(depth=0){
       try {
         if (depth > 100){
@@ -44,9 +59,11 @@ const browseRevolut = async () => {
         }
       }
     };
-    // await expandPagination();
+    if (paginationSelector){
+      await expandPagination();
+    }
 
-    const jobsSelector = '#__next > main > section.Box-rui__sc-1g1k12l-0.sc-d85bbb3d-0.jHUjFU.cNPxDM > div > div.Box-rui__sc-1g1k12l-0.sc-2f63823-1.kVISKd.hfZcoP';
+
     var jobsElem = await page.waitForSelector(jobsSelector);
     var jobsText = await jobsElem.evaluate(el => el.innerText);
 
@@ -56,4 +73,4 @@ const browseRevolut = async () => {
   }
 
 
-module.exports = browseRevolut;
+module.exports = crawl;
