@@ -13,19 +13,19 @@ const typeDefs = `#graphql
     type Job {
         id: ID!
         title: String!
-        location: String!
+        locations: [String!]!
         dateAdded: Date!
         company: Company!
     }
 
     type Query {
         companies: [Company]
-        jobs(title: String, location: String): [Job]
+        jobs(title: String, locations: [String]): [Job]
     }
 
     type Mutation {
         addCompany(name:String!, url:String!, htmlElem: String!, paginationUrl: String): Company
-        addJob(title:String!, location: String!, companyName:String!): Job
+        addJob(title:String!, locations: [String]!, companyName:String!): Job
     }
 `;
 

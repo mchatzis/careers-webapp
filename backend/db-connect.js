@@ -7,4 +7,8 @@ async function connect_db(uri, username, password){
     })
 };
 
-module.exports = connect_db;
+async function disconnect_db(){
+    return await mongoose.disconnect();
+}
+
+module.exports = { connect_db, disconnect_db };

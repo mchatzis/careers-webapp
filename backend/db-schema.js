@@ -3,7 +3,8 @@ const { Schema, model } = require('mongoose');
 const companySchema = new Schema({
     name: {
         type: String,
-        required: [true, 'Company.name required.']
+        required: [true, 'Company.name required.'],
+        unique: true
     },
     url: {
         type: String,
@@ -25,8 +26,8 @@ const jobSchema = new Schema({
         type: String,
         required: [true, 'Job.title required.']
     },
-    location: {
-        type: String,
+    locations: {
+        type: [String],
         required: [true, 'Job.location required.']
     },
     dateAdded: {

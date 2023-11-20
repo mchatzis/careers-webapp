@@ -5,7 +5,7 @@ const { ApolloServer } = require('@apollo/server');
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const db_connect = require('./db-connect');
+const { connect_db, disconnect_db } = require('./db-connect');
 const typeDefs = require('./gql-schema');
 const resolvers = require('./gql-resolvers');
 
@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'production'){
 }
 
 async function main(){
-    await db_connect(process.env.DB_URI, process.env.DB_USERNAME, process.env.DB_PASSWORD);
+    await connect_db(process.env.DB_URI, process.env.DB_USERNAME, process.env.DB_PASSWORD);
     
     const app = express();
     const httpServer = http.createServer(app);
