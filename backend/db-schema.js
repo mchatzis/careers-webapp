@@ -10,11 +10,12 @@ const companySchema = new Schema({
         type: String,
         required: [true, 'Company.url required.']
     },
-    htmlElem: {
+    jobsSelector: {
         type: String,
-        required: [true, 'Company.jobsElem required.']
+        required: [true, 'Company.jobsSelector required.']
     },
-    paginationUrl: String,
+    cookiesSelector: String,
+    paginationSelector: String,
     jobs: [{
             type: Schema.Types.ObjectId,
             ref: 'Job'

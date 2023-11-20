@@ -1,8 +1,6 @@
 const puppeteer = require('puppeteer');
 const queryGPT = require('./gpt');
 const { Company, Job } = require('../backend/db-schema');
-const mongoose = require('mongoose');
-const { connect_db, disconnect_db }= require('../backend/db-connect')
 
 // const testJobs = [
 //   {
@@ -17,10 +15,10 @@ const { connect_db, disconnect_db }= require('../backend/db-connect')
 
 const promt = `
   Below you are given data from a company's careers webpage. Reformat the data into a json array.
-  Each element of the array must have only two attributes, one named title and one locations. 
+  Each element of the output array must have only two attributes, one named title and one locations. 
   Group multiple locations into an array.
   Ignore remote data completely.
-  Your response should include only the json.
+  Your response should include only the json array.
 
   Input data:\n
 `;
@@ -30,8 +28,8 @@ const scrapeProcessSave = async (companies) => {
     try{
       let jobData = await scrapeCompany(company);
       let gptRes = await queryGPT(promt + jobData);
+      // console.log(gptRes)
       let jobs = JSON.parse(gptRes);
-      console.log(jobs)
       await insertJobsToDB(jobs, company);
     }
     catch (error) {
@@ -79,13 +77,15 @@ const extractJobs = async (browser, company) => {
   await new Promise(r => setTimeout(r, 1000));
 
   // Accept cookies
-  try{
-    await Promise.all([ page.waitForNavigation({timeout: 4000}), page.click(company.cookieSelector) ]);
-  }
-  catch (error) {
-    let isTimeOutError = error instanceof puppeteer.TimeoutError;
-    if (!isTimeOutError){
-      throw error;
+  if (company.cookiesSelector){
+    try{
+      await Promise.all([ page.waitForNavigation({timeout: 4000}), page.click(company.cookiesSelector) ]);
+    }
+    catch (error) {
+      let isTimeOutError = error instanceof puppeteer.TimeoutError;
+      if (!isTimeOutError){
+        throw error;
+      }
     }
   }
 
@@ -108,7 +108,6 @@ async function expandPagination(paginationSelector, depth=0){
 };
 
 const insertJobsToDB = async (jobs, company) => {
-  await connect_db(process.env.DB_URI, process.env.DB_USERNAME, process.env.DB_PASSWORD);
   const companyDoc = await Company.findOne({name: company.name}).exec();
   
   await Promise.all(jobs.map(job => Job.create({
@@ -118,7 +117,6 @@ const insertJobsToDB = async (jobs, company) => {
     company: companyDoc
   })));
 
-  await disconnect_db();
 }
 
 

@@ -5,7 +5,8 @@ const typeDefs = `#graphql
         id: ID!
         name: String!
         url: String!
-        htmlElem: String!
+        jobsSelector: String!
+        cookiesSelector: String
         paginationUrl: String
         jobs: [Job]
     }
@@ -24,8 +25,18 @@ const typeDefs = `#graphql
     }
 
     type Mutation {
-        addCompany(name:String!, url:String!, htmlElem: String!, paginationUrl: String): Company
-        addJob(title:String!, locations: [String]!, companyName:String!): Job
+        addCompany(
+            name:String!, 
+            url:String!, 
+            jobsSelector: String!, 
+            cookiesSelector: String, 
+            paginationSelector: String
+        ): Company
+        addJob(
+            title:String!, 
+            locations: [String]!, 
+            companyName:String!
+        ): Job
     }
 `;
 
