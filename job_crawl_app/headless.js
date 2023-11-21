@@ -1,17 +1,6 @@
 const puppeteer = require('puppeteer');
 const queryGPT = require('./gpt');
-const { Company, Job } = require('../backend/db-schema');
-
-// const testJobs = [
-//   {
-//     "title": "Technical Program Manager, Fixed Term Contract",
-//     "locations": ["London"]
-//   },
-//   {
-//     "title": "Santa Claus assistant",
-//     "locations": ["Madrid"]
-//   }
-// ];
+const { Job } = require('../backend/db-schema');
 
 const promt = `
   Below you are given data from a company's careers webpage. Reformat the data into a json array.
@@ -24,19 +13,27 @@ const promt = `
 `;
 
 const scrapeProcessSave = async (companies) => {
+  const failed = [];
+
   for (const company of companies){
+    console.log("Starting scraping of ", company.name, ":")
     try{
+      const {_, deletedCount} = await Job.deleteMany({company:company._id});
+      console.log("\tDeleted ", deletedCount, " preexisting jobs.")
       let jobData = await scrapeCompany(company);
       let gptRes = await queryGPT(promt + jobData);
-      // console.log(gptRes)
       let jobs = JSON.parse(gptRes);
       await insertJobsToDB(jobs, company);
+      console.log("\tInserted ", jobs.length, " new jobs.")
     }
     catch (error) {
       console.log("Error while scraping " + company.name + ":\n", error.name, error.message)
       // console.trace(error); For debugging
+      failed.push(company);
     }
   }
+
+  return failed;
 };
 
 const scrapeCompany = async (company) => {
@@ -73,7 +70,7 @@ const extractJobs = async (browser, company) => {
     }
   });
 
-  await page.goto(company.companyUrl , { waitUntil: ['load', 'domcontentloaded'], timeout: 6000});
+  await page.goto(company.url , { waitUntil: ['load', 'domcontentloaded'], timeout: 6000});
   await new Promise(r => setTimeout(r, 1000));
 
   // Accept cookies
@@ -108,15 +105,12 @@ async function expandPagination(paginationSelector, depth=0){
 };
 
 const insertJobsToDB = async (jobs, company) => {
-  const companyDoc = await Company.findOne({name: company.name}).exec();
-  
   await Promise.all(jobs.map(job => Job.create({
     title: job.title,
     locations: job.locations,
     dateAdded: Date.now(),
-    company: companyDoc
+    company: company._id
   })));
-
 }
 
 

@@ -7,7 +7,7 @@ const typeDefs = `#graphql
         url: String!
         jobsSelector: String!
         cookiesSelector: String
-        paginationUrl: String
+        paginationSelector: String
         jobs: [Job]
     }
 
@@ -32,11 +32,7 @@ const typeDefs = `#graphql
             cookiesSelector: String, 
             paginationSelector: String
         ): Company
-        addJob(
-            title:String!, 
-            locations: [String]!, 
-            companyName:String!
-        ): Job
+        addJob(title:String!, locations: [String]!, companyName:String!): Job
     }
 `;
 
