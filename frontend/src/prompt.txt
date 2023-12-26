@@ -1,0 +1,8 @@
+I am building a job site in React, using Tailwind for the styling.
+The site is a single-page application. It is fairly simple. There are
+two components that comprise the application. They are stacked horizontally
+from top to bottom. The top component should be a search bar with two input fields, 
+one for job title and one for location and a button for initiating the search. 
+
+Design the form input fields.
+
