@@ -12,7 +12,7 @@ const promt = `
   Input data:\n
 `;
 
-const scrapeProcessSave = async (companies) => {
+const scrapeCompanies = async (companies) => {
   const failed = [];
 
   for (const company of companies){
@@ -114,4 +114,4 @@ const insertJobsToDB = async (jobs, company) => {
 }
 
 
-module.exports = scrapeProcessSave;
+module.exports = scrapeCompanies;

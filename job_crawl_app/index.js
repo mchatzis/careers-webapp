@@ -1,4 +1,4 @@
-const scrapeProcessSave = require('./headless');
+const scrapeCompanies = require('./headless');
 const { connect_db, disconnect_db }= require('../backend/db-connect');
 const { Company } = require('../backend/db-schema');
 
@@ -11,7 +11,7 @@ async function main(){
   let toBeScraped = companies;
   while(toBeScraped.length !== 0 && attempts < 3){
     console.log("Currently on attempt ", attempts + 1, " of scraping.")
-    toBeScraped = await scrapeProcessSave(toBeScraped);
+    toBeScraped = await scrapeCompanies(toBeScraped);
     attempts++;
   }
 
