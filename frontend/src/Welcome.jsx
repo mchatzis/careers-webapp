@@ -1,14 +1,21 @@
 import React from 'react';
 import SearchBar from './SearchBar.jsx';
+import { useNavigate } from 'react-router-dom';
 
-export default function Welcome({ setIsSearching }){
+
+export default function Welcome({ handleClick }){
+  const navigate = useNavigate();
+
+  function handleClick () {
+      navigate('/search');
+    };
 
   return (
     <>
       <div className='h-2/3'>
         <div className='h-full ml-[10dvw] flex justify-center flex-col gap-[5dvh]'>
           <p className='text-txt text-3xl'>Search jobs, directly fetched from company websites.</p>
-          <SearchBar setIsSearching={setIsSearching}/>
+          <SearchBar handleClick={handleClick}/>
         </div>
       </div>
       <div className='h-1/3'>
