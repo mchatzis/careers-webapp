@@ -14,6 +14,12 @@ const resolvers = {
             }
 
             return query.exec();
+        },
+        titles(){
+            return Job.distinct('title').exec();
+        },
+        locations(){
+            return Job.distinct('locations').exec();
         }
     },
 

@@ -22,6 +22,8 @@ const typeDefs = `#graphql
     type Query {
         companies: [Company]
         jobs(title: String, locations: [String]): [Job]
+        titles: [String]
+        locations: [String]
     }
 
     type Mutation {

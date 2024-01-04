@@ -3,6 +3,7 @@ import React from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import App from './App.jsx';
 import { BrowserRouter } from "react-router-dom";
+import GlobalQueries from './GlobalQueries.jsx';
 
 const client = new ApolloClient({
     uri: 'http://localhost:3000/api',
@@ -15,7 +16,9 @@ const root = createRoot(domNode);
 root.render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <App />
+      <GlobalQueries>
+        <App />
+      </GlobalQueries>
     </ApolloProvider>
   </BrowserRouter>
 );
