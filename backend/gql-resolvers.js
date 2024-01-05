@@ -7,7 +7,7 @@ const resolvers = {
         jobs(_, {title, location}) {
             const query = Job.find();
             if (title !== undefined && title !== "" && title !== null){
-                query.find({title})
+                query.find({title:{'$regex': title, '$options': 'i'}})
             }
             if (location !== undefined && location !== "" && location !== null){
                 query.find({locations: location})

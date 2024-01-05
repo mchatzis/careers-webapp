@@ -16,6 +16,12 @@ export default function ResultsList({ jobs }){
         window.open(url, '_blank');
     }
 
+    if (jobs.length === 0){
+        return (
+            <p className='text-txt text-xl'>No job matches were found.</p>
+        )
+    }
+
     return (
         <div className='h-full text-xl flex flex-col text-gray-700 bg-bgnd rounded-lg shadow overflow-y-scroll gap-2'>
             {jobs.map((job, index) => {
