@@ -8,18 +8,18 @@ export default function InputDropdown({ placeholder, inputValue, setInputValue, 
     const [options, setOptions] = useState([]);
 
     useEffect(()=>{
-        setOptions(suggestions);
+     setOptions(suggestions); 
     }, [suggestions])
 
     function handleInputChange(e){
         const value = e.target.value;
         setInputValue(value);
     
-        let filteredSuggestions = [];
+        let filteredSuggestions = suggestions;
   
         if (value.trim() !== "") {
-          filteredSuggestions = options.filter(option => {
-            return option.toLowerCase().startsWith(value.toLowerCase());
+          filteredSuggestions = suggestions.filter(suggestion => {
+            return suggestion.toLowerCase().includes(value.toLowerCase());
           });
         }
 
@@ -43,7 +43,6 @@ export default function InputDropdown({ placeholder, inputValue, setInputValue, 
             type="text"
             value={inputValue}
             placeholder={placeholder}
-            list='jobTitleList'
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={handleInputChange}
