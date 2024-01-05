@@ -4,13 +4,13 @@ const dateScalar = require('./scalars');
 const resolvers = {
     Query: {
         companies() {return Company.find().exec()},
-        jobs(_, {title, locations}) {
+        jobs(_, {title, location}) {
             const query = Job.find();
-            if (title !== undefined){
+            if (title !== undefined && title !== "" && title !== null){
                 query.find({title})
             }
-            if (locations !== undefined){
-                query.find({locations})
+            if (location !== undefined && location !== "" && location !== null){
+                query.find({locations: location})
             }
 
             return query.exec();

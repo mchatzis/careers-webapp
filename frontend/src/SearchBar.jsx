@@ -21,7 +21,7 @@ export default function SearchBar ({ jobTitle, setJobTitle, jobLocation, setJobL
 
   return (
     <>
-      <div className='flex h-[30vh]'>
+      <div className='flex h-full'>
         <InputDropdown 
           placeholder={'Job Title'} 
           inputValue={jobTitle} 
