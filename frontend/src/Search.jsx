@@ -29,7 +29,7 @@ export default function Search(){
     const location = useLocation();
 
     useEffect(()=>{
-        if (location.state.jobTitle || location.state.jobLocation){
+        if (location.state){
             setJobTitle(location.state.jobTitle);
             setJobLocation(location.state.jobLocation);
             getJobs({ variables: { title:location.state.jobTitle, location:location.state.jobLocation } })
