@@ -6,3 +6,5 @@ node_modules
 gpt.json
 
 *.env*
+yarn.lock
+package-lock.json

@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities{
+    ::-webkit-scrollbar {
+        width: 1vw;
+      }
+    
+    ::-webkit-scrollbar-track {
+        border-radius: 100vh;
+        background: transparent;
+      }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #DED0B6;
+        border-radius: 100vh;
+      }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #B2A59B;
+      }
+}
+
+body.waiting * {
+  cursor: wait;
+}
