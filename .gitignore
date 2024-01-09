@@ -8,3 +8,5 @@ gpt.json
 *.env*
 yarn.lock
 package-lock.json
+
+/docker-compose_dev.yaml
