@@ -25,8 +25,6 @@ export default function ResultsList({ jobs }){
     return (
         <div className='h-full text-xl flex flex-col text-gray-700 bg-bgnd rounded-lg shadow overflow-y-scroll gap-2'>
             {jobs.map((job, index) => {
-                console.log(job);
-
                 const jobDisplay = {
                     title: job.title,
                     company: job.company.name,
@@ -41,7 +39,9 @@ export default function ResultsList({ jobs }){
                     >
                         {Object.keys(jobDisplay).map((key)=>{
                             return (
-                                <div className='w-[25dvw] whitespace-normal'>
+                                <div key={key}
+                                    className='w-[25dvw] whitespace-normal'
+                                >
                                     {jobDisplay[key]}
                                 </div>
                             );

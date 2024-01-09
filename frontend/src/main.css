@@ -21,3 +21,7 @@
         background: #B2A59B;
       }
 }
+
+body.waiting * {
+  cursor: wait;
+}

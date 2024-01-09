@@ -1,13 +1,17 @@
 const { Company, Job } = require('./db-schema');
 const dateScalar = require('./scalars');
 
+function escapeRegex(string) {
+    return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
 const resolvers = {
     Query: {
         companies() {return Company.find().exec()},
         jobs(_, {title, location}) {
             const query = Job.find();
             if (title !== undefined && title !== "" && title !== null){
-                query.find({title:{'$regex': title, '$options': 'i'}})
+                query.find({title:{'$regex': escapeRegex(title), '$options': 'i'}})
             }
             if (location !== undefined && location !== "" && location !== null){
                 query.find({locations: location})

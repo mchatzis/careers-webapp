@@ -17,11 +17,11 @@ export default function NavBar({ setDisplay }){
     }
       
     return (
-        <ul className="absolute w-full text-center p-5">
+        <ul className="absolute w-full text-center p-8 bg-bgnd rounded-lg">
             {Object.keys(pageMapping).map((key)=>{
                 return (
                     <li 
-                        className="h-10 border border-detail2 text-xl font-bold text-detail2 cursor-pointer hover:bg-detail2 hover:text-black"
+                        className="h-10 border border-detail2 text-xl font-bold rounded-sm text-detail2 cursor-pointer hover:bg-detail2 hover:text-black"
                         onClick={() => handleClick(pageMapping[key])}
                         key={key}
                     >

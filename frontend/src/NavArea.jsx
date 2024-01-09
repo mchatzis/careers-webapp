@@ -8,7 +8,7 @@ export default function NavArea(){
 
     return (
         <div 
-            className="absolute right-10 top-10 h-[25dvh] w-[15dvw]"
+            className="absolute right-10 top-10 h-[25dvh] w-[17dvw]"
             onMouseLeave={() => setDisplay(false)}
         >
             {display ? <NavBar setDisplay={setDisplay}/> :<MenuIcon setDisplay={setDisplay}/>}
