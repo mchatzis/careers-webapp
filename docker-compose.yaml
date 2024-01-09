@@ -1,0 +1,8 @@
+services:
+  web:
+    container_name: careers-app
+    build: .
+    env_file:
+      - .env
+    expose:
+      - 3000:3000

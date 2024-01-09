@@ -7,3 +7,4 @@ gpt.json
 
 *.env*
 yarn.lock
+package-lock.json
