@@ -6,3 +6,9 @@ services:
       - .env
     ports:
       - 3000:3000
+  nginx:
+    build: ./nginx/Dockerfile-dev
+    ports: 
+      - 80:4567
+    depends_on:
+      - web
