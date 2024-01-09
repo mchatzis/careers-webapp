@@ -36,6 +36,10 @@ async function main(){
         })
     );
 
+    app.get('/', (req, res) => {
+        res.send('hello world')
+    })
+
     const port = process.env.HOST_PORT;
     const host = process.env.HOST_NAME;
     httpServer.listen(port, host, listeningListener= ()=>{
