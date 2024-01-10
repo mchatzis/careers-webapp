@@ -6,6 +6,9 @@ services:
       - .env
     expose:
       - 3000
+    volumes:
+      - static_volume:/home/ec2-user/careers-webapp/dist
+
   nginx:
     build: ./nginx
     ports: 
@@ -15,3 +18,7 @@ services:
       - web
     volumes:
       - /home/ec2-user/.acme.sh/direct-jobs.site_ecc:/home/ec2-user/.acme.sh/direct-jobs.site_ecc
+      - static_volume:/home/ec2-user/careers-webapp/dist
+
+volumes:
+  static_volume:
