@@ -6,7 +6,7 @@
     "dev": "nodemon ./backend/server.js",
     "prod" : "node ./backend/server.js",
     "serve": "webpack serve --mode development",
-    "build": "webpack build --mode development"
+    "build": "webpack build"
   },
   "repository": "git@github.com:mchatzis/careers-webapp.git",
   "author": "Michail Chatzis <michatzis@gmail.com>",

@@ -1,4 +1,5 @@
 const http = require('http');
+const path = require('path');
 const express = require('express');
 const { expressMiddleware } = require('@apollo/server/express4');
 const { ApolloServer } = require('@apollo/server');
@@ -36,9 +37,16 @@ async function main(){
         })
     );
 
-    app.get('/', (req, res) => {
-        res.send('hello world')
-    })
+    const clientRoutes = [
+        "/",
+        "/search",
+        "/about"
+    ]
+    clientRoutes.forEach((route)=>{
+        app.get(route, function(req,res){
+            res.sendFile(path.join(__dirname, '../dist/index.html'));
+        })
+    });
 
     const port = process.env.HOST_PORT;
     const host = process.env.HOST_NAME;
