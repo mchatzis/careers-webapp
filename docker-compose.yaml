@@ -12,3 +12,5 @@ services:
       - 80:80
     depends_on:
       - web
+    volumes:
+      - /home/ec2-user/.acme.sh/direct-jobs.site_ecc:/home/ec2-user/.acme.sh/direct-jobs.site_ecc
