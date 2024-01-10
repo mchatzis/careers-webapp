@@ -1,7 +1,10 @@
 const path = require('path');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 const config = {
+  mode: isDevelopment ? 'development' : 'production',
   entry: [
     './frontend/src/index.js'
   ],
@@ -13,8 +16,8 @@ const config = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: 'babel-loader'
       },
       {
         test: /\.css$/,
@@ -36,9 +39,7 @@ const config = {
       directory: './dist'
     }
   },
-  plugins: [
-    new ReactRefreshWebpackPlugin()
-  ]
+  plugins: [isDevelopment && new ReactRefreshWebpackPlugin()].filter(Boolean),
 };
 
 module.exports = config;

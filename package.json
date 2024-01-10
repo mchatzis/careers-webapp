@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon ./backend/server.js",
     "prod" : "node ./backend/server.js",
-    "serve": "webpack serve --mode development",
+    "serve": "webpack serve",
     "build": "webpack build"
   },
   "repository": "git@github.com:mchatzis/careers-webapp.git",
