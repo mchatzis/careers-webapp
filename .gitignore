@@ -11,3 +11,4 @@ package-lock.json
 
 /docker-compose_dev.yaml
 dist/bundle.js.LICENSE.txt
+/dist/index.html
