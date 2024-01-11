@@ -10,3 +10,4 @@ yarn.lock
 package-lock.json
 
 /docker-compose_dev.yaml
+dist/bundle.js.LICENSE.txt

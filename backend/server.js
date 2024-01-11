@@ -10,6 +10,11 @@ const { connect_db, disconnect_db } = require('./db-connect');
 const typeDefs = require('./gql-schema');
 const resolvers = require('./gql-resolvers');
 
+const env = {
+    'HOST_NAME': process.env.HOST_NAME,
+    'HOST_PORT': process.env.HOST_PORT
+};
+
 var isProduction = true;
 if (process.env.NODE_ENV !== 'production'){
     isProduction = false;
@@ -44,9 +49,11 @@ async function main(){
     ]
     clientRoutes.forEach((route)=>{
         app.get(route, function(req,res){
-            res.sendFile(path.join(__dirname, '../dist/index.html'));
+            res.send(html);
         })
     });
+
+    app.use(express.static(path.join(__dirname, '../dist')));
 
     const port = process.env.HOST_PORT;
     const host = process.env.HOST_NAME;
@@ -57,3 +64,22 @@ async function main(){
 
 
 main();
+
+
+const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>    
+</head>
+<body>
+    <script>
+        const env = ${JSON.stringify(env)};
+    </script>
+    <div id="root"></div>
+    <script src="bundle.js"></script>
+</body>
+</html>
+`

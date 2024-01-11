@@ -5,9 +5,11 @@ import App from './App.jsx';
 import { BrowserRouter } from "react-router-dom";
 import GlobalQueries from './GlobalQueries.jsx';
 
+const { HOST_NAME, HOST_PORT } = env;
+
 const client = new ApolloClient({
-    uri: 'http://localhost:3000/api',
-    cache: new InMemoryCache(),
+    uri: `http://${HOST_NAME}:${HOST_PORT}/api`,
+    cache: new InMemoryCache()
   });
 
 const domNode = document.getElementById('root');
