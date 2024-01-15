@@ -8,7 +8,7 @@ import GlobalQueries from './GlobalQueries.jsx';
 const { HOST_NAME, HOST_PORT } = env;
 
 const client = new ApolloClient({
-    uri: `http://${HOST_NAME}:${HOST_PORT}/api`,
+    uri: `https://${HOST_NAME}:${HOST_PORT}/api`,
     cache: new InMemoryCache()
   });
 
