@@ -55,8 +55,8 @@ async function main(){
 
     app.use(express.static(path.join(__dirname, '../dist')));
 
-    const port = process.env.HOST_PORT;
-    const host = process.env.HOST_NAME;
+    const port = '3000';
+    const host = '0.0.0.0';
     httpServer.listen(port, host, listeningListener= ()=>{
         console.log(`Server running on http://${host}:${port}`)
     });

@@ -6,8 +6,6 @@ services:
       - .env
     expose:
       - 3000
-    volumes:
-      - static_volume:/home/app/dist
 
   nginx:
     build: ./nginx
@@ -18,7 +16,3 @@ services:
       - web
     volumes:
       - /home/ec2-user/.acme.sh/direct-jobs.site_ecc:/home/ec2-user/.acme.sh/direct-jobs.site_ecc
-      - static_volume:/home/app/dist
-
-volumes:
-  static_volume:
