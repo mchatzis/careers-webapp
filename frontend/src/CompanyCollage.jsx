@@ -1,5 +1,25 @@
 import React from "react";
 
+export default function CompanyCollage({ companies }){
+    return (
+        <>
+            {companies.map((company, index)=> {
+                if (index > companyStyles.length - 1){
+                    return null;
+                }
+
+                return (
+                    <div 
+                        key={company.name} 
+                        style={companyStyles[index]}
+                        onClick={() => window.open(company.url, '_blank')}
+                        >{company.name}</div>
+                );
+            })}
+        </>
+    )
+}
+
 function generateRandomNumber(min, max) {
     /*
       Returns random number between min and max, inclusive both sides.
@@ -13,38 +33,7 @@ const colors = [
     '#0e006a'
 ]
 
-export default function CompanyCollage({ companies }){
-    return (
-        <>
-            {companies.map((company, index)=> {
-                if (index > array.length - 1){
-                    return null;
-                }
-                const colorIndex = generateRandomNumber(0, colors.length - 1);
-
-                const style = {
-                'position': 'absolute',
-                'top': array[index].top,
-                'left': array[index].left,
-                'color': colors[colorIndex],
-                'fontSize': array[index].fontSize,
-                'cursor': 'pointer',
-                };
-
-                return (
-                <div 
-                    key={company.name} 
-                    style={style}
-                    onClick={() => window.open(company.url, '_blank')}>
-                    {company.name}</div>
-                );
-            })
-            }
-        </>
-    )
-}
-
-const array = [
+const fixedPositions = [
     {
         "top": "0%",
         "left": "50%",
@@ -146,3 +135,12 @@ const array = [
         "fontSize": 34
     }
 ]
+
+const companyStyles = fixedPositions.map((style)=> {
+    return {
+        ...style, 
+        'color': colors[generateRandomNumber(0, colors.length - 1)],
+        'position': 'absolute',
+        'cursor': 'pointer'
+    }
+});

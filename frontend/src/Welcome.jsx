@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar.jsx';
 import { useNavigate } from 'react-router-dom';
-import { useCompanies } from './GlobalQueries.jsx';
 import CompanyCollage from './CompanyCollage.jsx';
+import { gql, useLazyQuery } from '@apollo/client';
 
 
 export default function Welcome(){
+  const navigate = useNavigate();
   const [jobTitle, setJobTitle] = useState('');
   const [jobLocation, setJobLocation] = useState('');
-  const { loading, error, data } = useCompanies();
-  const navigate = useNavigate();
+  const [getCompanies, {loading, error, data}] = useLazyQuery(GET_COMPANIES);
 
-  let companies = [];
-  if (!loading && !error){
-    companies = data.companies;
-  }
+  useEffect(()=>{
+    getCompanies();
+  }, [])
 
   function handleClick(){
     navigate('/search', {
@@ -41,8 +40,19 @@ export default function Welcome(){
         </div>
       </div>
       <div className='relative h-2/5 ml-[10dvw]'>
-        <CompanyCollage companies={companies}/>
+        {data ? <CompanyCollage companies={data.companies}/> : null}
       </div>
     </>
   );
 }
+
+
+const GET_COMPANIES = gql`
+    query QueryCompanies{
+        companies{
+            id
+            name
+            url
+        }
+    }
+`;
