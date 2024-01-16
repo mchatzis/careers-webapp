@@ -5,8 +5,7 @@ const { Job } = require('../backend/db-schema');
 const promt = `
   Below you are given data from a company's careers webpage. Reformat the data into a json array.
   Each element of the output array must have only two attributes, one named title and one locations. 
-  Group multiple locations into an array.
-  Ignore remote data completely.
+  Locations can only be cities. Group multiple locations into an array. 
   Your response should include only the json array.
 
   Input data:\n
@@ -70,8 +69,10 @@ const extractJobs = async (browser, company) => {
     }
   });
 
+
   await page.goto(company.url , { waitUntil: ['load', 'domcontentloaded'], timeout: 6000});
   await new Promise(r => setTimeout(r, 1000));
+
 
   // Accept cookies
   if (company.cookiesSelector){
@@ -86,8 +87,10 @@ const extractJobs = async (browser, company) => {
     }
   }
 
+
+
   if (company.paginationSelector){
-    await expandPagination(company.paginationSelector);
+    await expandPagination(page, company.paginationSelector);
   }
 
   var jobsElem = await page.waitForSelector(company.jobsSelector);
@@ -96,22 +99,31 @@ const extractJobs = async (browser, company) => {
   return jobsText;
 };
 
-async function expandPagination(paginationSelector, depth=0){
+async function expandPagination(page, paginationSelector, depth=0){
+  const noSelector = await page.$(paginationSelector) === null;
+  if (noSelector){
+    return;
+  }
   if (depth > 100){
     throw new Error("expandPagination() recursion depth exceeded");
   }
+
   await page.click(paginationSelector);
-  await expandPagination(paginationSelector, depth + 1);
+  await expandPagination(page, paginationSelector, depth + 1);
 };
+
 
 const insertJobsToDB = async (jobs, company) => {
   await Promise.all(jobs.map(job => Job.create({
     title: job.title,
-    locations: job.locations,
+    locations: job.locations.map(capitalizeFirstLetter),
     dateAdded: Date.now(),
     company: company._id
   })));
 }
 
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
 
 module.exports = scrapeCompanies;

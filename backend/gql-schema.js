@@ -21,7 +21,7 @@ const typeDefs = `#graphql
 
     type Query {
         companies: [Company]
-        jobs(title: String, location: String): [Job]
+        jobs(title: String, location: String, offset: Int): [Job]
         titles: [String]
         locations: [String]
     }

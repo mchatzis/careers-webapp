@@ -8,7 +8,7 @@ function escapeRegex(string) {
 const resolvers = {
     Query: {
         companies() {return Company.find().exec()},
-        jobs(_, {title, location}) {
+        jobs(_, {title, location, offset}) {
             const query = Job.find();
             if (title !== undefined && title !== "" && title !== null){
                 query.find({title:{'$regex': escapeRegex(title), '$options': 'i'}})
@@ -17,7 +17,7 @@ const resolvers = {
                 query.find({locations: location})
             }
 
-            return query.exec();
+            return query.skip(offset).limit(10).exec();
         },
         titles(){
             return Job.distinct('title').exec();

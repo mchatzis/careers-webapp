@@ -1,4 +1,39 @@
 import React from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Job from './Job.jsx';
+
+export default function ResultsList({ jobs, fetchMore }){
+    if (jobs.length === 0){
+        return (
+            <p className='text-txt text-xl'>No job matches were found.</p>
+        )
+    }
+
+    const jobsList = jobs.map((job, index) => (
+            <Job index={index}
+                 job={{ title: job.title,
+                        company: job.company.name,
+                        locations: locationsToString(job.locations)}}
+                 url={job.company.url}
+                />
+            ));
+
+    return (
+            <InfiniteScroll
+                dataLength={jobs.length}
+                next={() => fetchMore({
+                    variables:{
+                        offset:jobs.length
+                    }
+                })}
+                hasMore={true}
+                className='text-xl flex flex-col text-gray-700 bg-bgnd rounded-lg shadow gap-2'
+                scrollableTarget='scrollable'
+            >
+                {jobsList}
+            </InfiniteScroll> 
+    )
+}
 
 function locationsToString(locations){
     let string = '';
@@ -8,47 +43,4 @@ function locationsToString(locations){
     string = string.substring(0, string.length - 2);
 
     return string;
-}
-
-export default function ResultsList({ jobs }){
-    
-    function handleClick(url){
-        window.open(url, '_blank');
-    }
-
-    if (jobs.length === 0){
-        return (
-            <p className='text-txt text-xl'>No job matches were found.</p>
-        )
-    }
-
-    return (
-        <div className='h-full text-xl flex flex-col text-gray-700 bg-bgnd rounded-lg shadow overflow-y-scroll gap-2'>
-            {jobs.map((job, index) => {
-                const jobDisplay = {
-                    title: job.title,
-                    company: job.company.name,
-                    locations: locationsToString(job.locations)
-                }
-
-                return (
-                    <div 
-                        key={index} 
-                        className='flex justify-start items-center py-[7dvh] h-[20dvh] bg-white rounded-lg hover:bg-gray-200 hover:cursor-pointer p-3 mr-1 gap-[15dvw]'
-                        onClick={() => window.open(job.company.url, '_blank')}
-                    >
-                        {Object.keys(jobDisplay).map((key)=>{
-                            return (
-                                <div key={key}
-                                    className='w-[25dvw] whitespace-normal'
-                                >
-                                    {jobDisplay[key]}
-                                </div>
-                            );
-                        })}
-                    </div>
-                );
-            })}
-        </div>
-    )
 }

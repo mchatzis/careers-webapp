@@ -5,11 +5,14 @@ import { useLocation } from 'react-router-dom';
 import { gql, useLazyQuery } from '@apollo/client';
 import ResultsList from './ResultsList.jsx';
 
-
 export default function Search(){
     const [jobTitle, setJobTitle] = useState('');
     const [jobLocation, setJobLocation] = useState('');
-    const [getJobs, { loading, error, data }] = useLazyQuery(GET_JOBS);
+    const [getJobs, { loading, error, data, fetchMore }] = useLazyQuery(GET_JOBS, {
+        variables:{
+            offset:0
+        }
+    });
     const location = useLocation();
 
     useEffect(()=>{
@@ -29,6 +32,7 @@ export default function Search(){
         }
     },[loading])
 
+
     if (error){
         return (
             <p className='text-txt text-xl'>Error: {error.message}</p>
@@ -46,8 +50,8 @@ export default function Search(){
                         handleClick={() => getJobs({ variables: {title:jobTitle, location:jobLocation} })}
                     />
                 </div>
-                <div className='h-[75dvh] w-[90dvw]'>
-                    {data ? <ResultsList jobs={data.jobs}/> : null}
+                <div id='scrollable' className='h-[75dvh] w-[90dvw] overflow-y-scroll'>
+                    {data ? <ResultsList jobs={data.jobs} fetchMore={fetchMore}/> : null}
                 </div>
             </div>
         </>
@@ -55,8 +59,8 @@ export default function Search(){
 }
 
 const GET_JOBS = gql`
-    query QueryJobs($title: String, $location: String) {
-        jobs(title: $title, location: $location) {
+    query QueryJobs($title: String, $location: String, $offset: Int) {
+        jobs(title: $title, location: $location, offset: $offset) {
             id
             title
             locations
