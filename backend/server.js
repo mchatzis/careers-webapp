@@ -12,7 +12,8 @@ const resolvers = require('./gql-resolvers');
 
 const env = {
     'HOST_NAME': process.env.HOST_NAME,
-    'HOST_PORT': process.env.HOST_PORT
+    'HOST_PORT': process.env.HOST_PORT,
+    'PROTOCOL': process.env.PROTOCOL
 };
 
 var isProduction = true;

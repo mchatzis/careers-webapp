@@ -7,4 +7,6 @@ RUN npm install
 
 COPY . .
 
-CMD ["sh", "./entrypoint.sh"]
+RUN npm run build
+
+CMD ["npm", "run", "prod"]
