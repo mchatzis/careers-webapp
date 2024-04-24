@@ -5,7 +5,7 @@ const { Job } = require('../backend/db-schema');
 const promt = `
   Below you are given data from a company's careers webpage. Reformat the data into a json array.
   Each element of the output array must have only two attributes, one named title and one locations. 
-  Locations can only be cities. Group multiple locations into an array. 
+  Locations can only be cities. If missing leave empty. Group multiple locations into an array. 
   Your response should include only the json array.
 
   Input data:\n
